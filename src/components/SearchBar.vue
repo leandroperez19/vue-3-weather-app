@@ -3,7 +3,7 @@
     <label for="searchBar_input">
       <FaSearch class="searchBar_inputlens" />
     </label>
-    <input type="text" placeholder="Search for a city..." id="searchBar_input" >
+    <input type="text" placeholder="Search for a city..." id="searchBar_input" @input="inputHandler" >
     <TbCurrentLocation class="currentLocation_btn" />
   </div>
   <CustomSelect :countries='countries' />
@@ -15,7 +15,6 @@
   import CustomSelect from './CustomSelect.vue';
   import {ref,defineComponent} from 'vue';
 
-
   export default defineComponent({
     components:{
       CustomSelect,
@@ -23,8 +22,14 @@
       TbCurrentLocation
     },
     setup(){
-      const countries = ref([{name:'Venezuela',key:1}])
-      return{countries}
+      const countries = ref([{name:'Venezuela',key:1}]);
+      const inputHandler = () => {
+        console.log('x')
+      }
+      return{
+        countries,
+        inputHandler
+      }
     }
   })
 </script>
