@@ -2,16 +2,19 @@
   <div class="savedCities">
     <h1>Saved Cities:</h1>
     <div class="savedCities_cities">
-      <div class="savedCities_cities-city" >
+      <RouterLink to="/12" class="savedCities_cities-city" > 
         Rabat,Morocco
-      </div>
+      </RouterLink >
     </div>
   </div>
 </template>
 
 <script lang="ts">
+  import {RouterLink} from 'vue-router'
   export default{
-  
+    components:{
+      RouterLink
+    }
   }
 </script>
 
@@ -33,6 +36,7 @@
     text-align: center;
     background-color: #1c47a0;
     border-radius: 4px;
+    max-width: 250px;
     cursor: pointer;
     transition: background-color cubic-bezier(0.165, 0.84, 0.44, 1) .3s;
   }

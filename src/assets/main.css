@@ -3,13 +3,25 @@
   padding: 0;
   margin: 0;
   list-style: none;
+  text-decoration: none;
   font-family: 'Roboto', sans-serif;
+}
+a{
+  color: #fff;
+}
+a:visited{
+  color: #fff;
 }
 body{
   background: linear-gradient(to bottom,rgb(31, 14, 189),rgb(7, 114, 201));
   background-repeat: no-repeat;
   height: fit-content;
   min-height: 100vh;
+}
+@media (min-width:768px) {
+  body{
+    overflow: overlay;
+  }
 }
 
 ::-webkit-scrollbar{

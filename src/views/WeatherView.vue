@@ -1,5 +1,8 @@
 <template>
   <div class="weatherView">
+    <RouterLink to="/" class="goBack_btn" >
+      <FaArrowLeft />
+    </RouterLink>
     <button class="saveLocation_btn">SAVE LOCATION</button>
     <CurrentWeatherInfo />
     <div class="todaysWeather">
@@ -28,17 +31,20 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, RouterLink } from 'vue-router';
 import HourCard from '@/components/HourCard.vue';
 import CurrentWeatherInfo from '@/components/CurrentWeatherInfo.vue';
 import DayCard from '@/components/DayCard.vue';
 import {defineComponent} from 'vue';
+import {FaArrowLeft} from 'vue3-icons/fa';
 
 export default defineComponent({
   components:{
     HourCard,
     CurrentWeatherInfo,
-    DayCard
+    DayCard,
+    FaArrowLeft,
+    RouterLink
   },
   setup() {
     const route = useRoute();
@@ -60,6 +66,20 @@ export default defineComponent({
     margin: 0 auto;
     position: relative;
   }
+  .goBack_btn{
+    font-size: 25px;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    cursor: pointer;
+    transition: background-color cubic-bezier(0.165, 0.84, 0.44, 1) .3s;
+  }
+  .goBack_btn:hover{
+    background-color: #fff3;
+  }
   .saveLocation_btn{
     position: absolute;
     top: 0;
@@ -70,6 +90,15 @@ export default defineComponent({
     outline: none;
     background-color: #f6a91b;
     border-radius: 0 0 10px 10px;
+    cursor: pointer;
+  }
+  .saveLocation_btn:hover{
+    background-color: #f6a91bbd;
+  }
+  @media (max-width:822px) {
+    .saveLocation_btn{
+      right: 24px;
+    }
   }
   .todaysWeather{
     margin: 20px auto;
