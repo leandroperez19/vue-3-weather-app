@@ -1,0 +1,38 @@
+<template>
+  <ul class="select">
+    <li v-for="country in countries" :key="country.key" class="option" >
+      {{ country.name }}
+    </li>
+  </ul>
+</template>
+
+<script lang="ts" >
+  import type {Country} from '../types/Country';
+
+  export default{
+    props:{
+      countries:{
+        type: Array as () => Country[],
+        default: []
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .select{
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    max-width: 70em;
+    background-color: #ffffff;
+    outline: 1px solid #000;
+  }
+  .option{
+    border-top: 1px solid #000;
+    padding: 10px 15px;
+    font-weight: 700;
+    position: relative;
+    width: 100%;
+  }
+</style>
