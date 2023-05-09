@@ -11,20 +11,24 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
   import {FaSearch} from 'vue3-icons/fa';
   import {TbCurrentLocation} from 'vue3-icons/tb';
-  import CustomSelect from './CustomSelect.vue';  
-</script>
+  import CustomSelect from './CustomSelect.vue';
+  import {ref,defineComponent} from 'vue';
 
-<script lang="ts">
-  export default {
-    data(){
-      return{
-        countries: [{name:'Venezuela',key:1}]
-      }
+
+  export default defineComponent({
+    components:{
+      CustomSelect,
+      FaSearch,
+      TbCurrentLocation
+    },
+    setup(){
+      const countries = ref([{name:'Venezuela',key:1}])
+      return{countries}
     }
-  }
+  })
 </script>
 
 <style scoped >
