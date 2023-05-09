@@ -1,14 +1,12 @@
 <template>
   <div class="searchBar">
-    <div class="searchBar_div">
-      <label for="searchBar_input">
-        <FaSearch class="searchBar_inputlens" />
-      </label>
-      <input type="text" placeholder="Search for a city..." id="searchBar_input" >
-      <TbCurrentLocation class="currentLocation_btn" />
-    </div>
-    <CustomSelect :countries='countries' />
+    <label for="searchBar_input">
+      <FaSearch class="searchBar_inputlens" />
+    </label>
+    <input type="text" placeholder="Search for a city..." id="searchBar_input" >
+    <TbCurrentLocation class="currentLocation_btn" />
   </div>
+  <CustomSelect :countries='countries' />
 </template>
 
 <script lang="ts">
@@ -33,15 +31,10 @@
 
 <style scoped >
   .searchBar{
-    position: relative;
-    width: 100%;
-    background-color: #000;
-    top: 20%;
-  }
-  .searchBar_div{
     height: 4em;
-    width: 80%;
-    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    margin-top: 18em;
     position: relative;
     max-width: 70em;
     display: flex;
@@ -72,5 +65,8 @@
     padding: 8.5px 0;
     border-left: 1px solid #777;
     cursor: pointer;
+  }
+  .currentLocation_btn:hover{
+    color: blue;
   }
 </style>

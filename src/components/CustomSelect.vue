@@ -21,12 +21,13 @@
 
 <style scoped>
   .select{
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     position: relative;
     max-width: 70em;
     background-color: #ffffff;
     outline: 1px solid #000;
+    border-radius: 0 0 4px 4px;
   }
   .option{
     border-top: 1px solid #000;
