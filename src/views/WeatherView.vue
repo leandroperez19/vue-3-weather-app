@@ -4,7 +4,7 @@
       <FaArrowLeft />
     </RouterLink>
     <button class="saveLocation_btn">SAVE LOCATION</button>
-    <CurrentWeatherInfo />
+    <CurrentWeatherInfo v-if="weather" :weather="weather[0]"  />
     <div class="todaysWeather">
       <h5>Today's Weather</h5>
       <div class="dailyWeather">
@@ -37,6 +37,11 @@ import CurrentWeatherInfo from '@/components/CurrentWeatherInfo.vue';
 import DayCard from '@/components/DayCard.vue';
 import {defineComponent} from 'vue';
 import {FaArrowLeft} from 'vue3-icons/fa';
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+
+
+
 
 export default defineComponent({
   components:{
@@ -49,10 +54,22 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const routeParam = route.params.id;
+    const store = useStore();
+    const weather = computed(()=> store.state.currentWeather);
+
+    const getCurrentWeatherInfo =() =>{
+      store.dispatch('onGetWeatherData',routeParam);
+    }
+
+    onMounted(()=>{
+      getCurrentWeatherInfo()
+    });
+
     return {
-      routeParam
+      routeParam,
+      weather
     };
-  }
+  },
 });
 </script>
 

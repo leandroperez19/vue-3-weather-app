@@ -1,50 +1,8 @@
 import { AxiosError, isAxiosError } from "axios";
 import baseService from "./baseServiceConfig";
+import { type DailyForecasts, type FiveDaysInfo, type locationInfo } from "@/types/weather.interface";
+import type DataResponse from "@/types/dataResponse.interface";
 
-export interface DataResponse<T> {
-  data: T;
-  error: string | null;
-}
-
-export interface locationInfo {
-  Key: string;
-  Type: string;
-  LocalizedName: string;
-  Version: number;
-  Rank: number;
-  Country: { ID: string; LocalizedName: string };
-  AdministrativeArea: { ID: string; LocalizedName: string };
-}
-
-export interface DailyForecasts {
-  DateTime: string;
-  IconPhrase: string;
-  Link: string;
-  MobileLink: string;
-  EpochDateTime: number;
-  PrecipitationProbability: number;
-  WeatherIcon: number;
-  HasPrecipitation: boolean;
-  IsDaylight: boolean;
-  Temperature: { Unit: string; UnitType: number; Value: number };
-}
-
-export interface Headline {
-  Category: string;
-  EffectiveDate: string;
-  EndDate: string;
-  Link: string;
-  MobileLink: string;
-  Text: string;
-  EffectiveEpochDate: number;
-  EndEpochDate: number;
-  Severity: number;
-}
-
-export interface FiveDaysInfo {
-  DailyForecasts: DailyForecasts[];
-  Headline: Headline;
-}
 
 export const getAutocompletedCountries = async (
   value: string
@@ -64,14 +22,14 @@ export const getAutocompletedCountries = async (
   return { data, error };
 };
 
-export const getOneHourForecast = async (
+export const getCurrentWeather = async (
   locationKey: string
 ): Promise<DataResponse<DailyForecasts[] | null>> => {
   let data = null;
   let error: string | null = null;
 
   try {
-    const url = `/forecasts/v1/hourly/1hour/${locationKey}`;
+    const url = `/currentconditions/v1/${locationKey}?details=true`;
     const res = await baseService.get(url);
     data = res.data;
   } catch (e) {

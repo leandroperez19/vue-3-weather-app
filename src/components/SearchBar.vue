@@ -4,16 +4,21 @@
       <FaSearch class="searchBar_inputlens" />
     </label>
     <input type="text" placeholder="Search for a city..." id="searchBar_input" @input="inputHandler" >
-    <TbCurrentLocation class="currentLocation_btn" />
+    <TbCurrentLocation class="currentLocation_btn"/>
   </div>
-  <CustomSelect :countries='countries' />
+  <CustomSelect :locations='locations' @onSelected="navigateToRoute" />
 </template>
 
 <script lang="ts">
   import {FaSearch} from 'vue3-icons/fa';
   import {TbCurrentLocation} from 'vue3-icons/tb';
   import CustomSelect from './CustomSelect.vue';
-  import {ref,defineComponent} from 'vue';
+  import {defineComponent,computed} from 'vue';
+  import { useStore } from 'vuex';
+  import { debounce } from 'lodash';
+  import { useRouter } from 'vue-router';
+  import type { locationInfo } from '@/types/weather.interface';
+
 
   export default defineComponent({
     components:{
@@ -22,13 +27,26 @@
       TbCurrentLocation
     },
     setup(){
-      const countries = ref([{name:'Venezuela',key:1}]);
-      const inputHandler = () => {
-        console.log('x')
+      const router = useRouter();
+      const store = useStore();
+      const locations = computed(() => store.state.locationList);
+      
+      const debouncedInputHandler = debounce((e: any) => {
+        store.dispatch('onGetLocationListByValue', e.target.value);
+      }, 700);
+
+      const inputHandler = (e: any) => {
+        debouncedInputHandler(e);
+      };
+
+      const navigateToRoute = (location: locationInfo) => {
+        router.push(`/${location.Key}`);
       }
+
       return{
-        countries,
-        inputHandler
+        locations,
+        inputHandler,
+        navigateToRoute
       }
     }
   })

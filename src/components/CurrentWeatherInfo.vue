@@ -4,35 +4,35 @@
     <h2>Wednesday 26 April</h2>
     <div class="info">
       <div class="info_top-left">
-        <img src="https://developer.accuweather.com/sites/default/files/01-s.png" alt="sun">
+        <img :src="`https://developer.accuweather.com/sites/default/files/${weather?.WeatherIcon < 10 && '0' + weather?.WeatherIcon}-s.png`" alt="img">
         <div class="info_top-left-temp">
-          <h3>31°</h3>
-          <span>Sunny</span>
+          <h3>{{`${weather?.Temperature.Metric.Value}°`}}</h3>
+          <span>{{`${weather?.WeatherText}`}}</span>
         </div>
       </div>
       <div class="info_bottom-right">
         <div class="high">
-          <h4>30°</h4>
+          <h4>{{`${weather?.TemperatureSummary.Past24HourRange.Maximum.Metric.Value}°`}}</h4>
           <span>High</span>
         </div>
         <div class="low">
-          <h4>30°</h4>
+          <h4>{{`${weather?.TemperatureSummary.Past24HourRange.Minimum.Metric.Value}°`}}</h4>
           <span>Low</span>
         </div>
         <div class="wind">
-          <h4>9.4mph</h4>
+          <h4>{{`${weather?.Wind.Speed.Imperial.Value}mph`}}</h4>
           <span>Wind</span>
         </div>
         <div class="pressure">
-          <h4>29.85in</h4>
+          <h4>{{`${weather?.Pressure.Imperial.Value}in`}}</h4>
           <span>Pressure</span>
         </div>
         <div class="humidity">
-          <h4>41%</h4>
+          <h4>{{`${weather?.RelativeHumidity}%`}}</h4>
           <span>Humidity</span>
         </div>
         <div class="precipitation">
-          <h4>29.85%</h4>
+          <h4>{{`${weather?.PrecipitationSummary.Precipitation.Metric.Value}%`}}</h4>
           <span>Precipitation</span>
         </div>
       </div>
@@ -40,9 +40,29 @@
   </div>
 </template>
 
-<script lang="ts">
-export default{
 
+
+
+<script lang="ts">
+
+import { computed, onMounted } from 'vue';
+import { type CurrentWeather } from '@/types/weather.interface';
+
+export default{
+  setup(props){
+    const {weather} = props;
+    return{
+      weather
+    }
+    // onMounted(()=>{
+    //   console.log(weather?.Temperature.Metric.Value)
+    // }); 
+  },
+  props:{
+    weather:{
+      type: Object as ()=> CurrentWeather
+    }
+  }
 }
 </script>
 

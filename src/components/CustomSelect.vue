@@ -1,21 +1,23 @@
 <template>
-  <ul class="select">
-    <li v-for="country in countries" :key="country.key" class="option" >
-      {{ country.name }}
+  <ul class="select" v-if="locations && locations.length > 0">
+    <li v-for="location in locations" :key="location.Key" class="option" @click="$emit('onSelected',location)" >
+      {{ location.LocalizedName }}
     </li>
   </ul>
+  <div v-else-if="locations && locations.length === 0" class="select">
+    No matches :c
+  </div>
 </template>
 
 <script lang="ts" >
-  import type {Country} from '../types/Country';
+  import type { locationInfo } from '@/types/weather.interface';
 
   export default{
     props:{
-      countries:{
-        type: Array as () => Country[],
-        default: []
+      locations:{
+        type: Array as () => locationInfo[] | null,
       }
-    }
+    },
   }
 </script>
 
