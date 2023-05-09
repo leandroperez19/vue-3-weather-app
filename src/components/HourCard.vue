@@ -25,6 +25,11 @@
     height: 9em;
     border-radius: 4px;
     margin: 0 auto;
+    margin-right: 8px;
+    margin-bottom: 10px;
+  }
+  .hourCard:last-child{
+    margin-right: 0;
   }
 
 </style>

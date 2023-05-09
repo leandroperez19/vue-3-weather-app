@@ -33,9 +33,10 @@
 
 <style scoped >
   .searchBar{
-    position: fixed;
+    position: relative;
     width: 100%;
-    top: 30%;
+    background-color: #000;
+    top: 20%;
   }
   .searchBar_div{
     height: 4em;

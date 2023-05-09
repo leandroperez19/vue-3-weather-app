@@ -34,5 +34,11 @@
     font-weight: 700;
     position: relative;
     width: 100%;
+    cursor: pointer;
+  }
+  .option:hover{
+    background-color: #0d2d85;
+    color: #fff;
+    border: 1px solid #fff;
   }
 </style>

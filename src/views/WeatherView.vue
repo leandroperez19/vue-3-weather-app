@@ -1,9 +1,14 @@
 <template>
   <div class="weatherView">
+    <button class="saveLocation_btn">SAVE LOCATION</button>
     <CurrentWeatherInfo />
     <div class="todaysWeather">
       <h5>Today's Weather</h5>
       <div class="dailyWeather">
+        <HourCard />
+        <HourCard />
+        <HourCard />
+        <HourCard />
         <HourCard />
         <HourCard />
         <HourCard />
@@ -51,16 +56,28 @@ export default defineComponent({
     height: 100%;
     min-height: 100vh;
     padding: 24px;
+    max-width: 822px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .saveLocation_btn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    background-color: #f6a91b;
+    border-radius: 0 0 10px 10px;
   }
   .todaysWeather{
-    max-width: 822px;
     margin: 20px auto;
   }
   .dailyWeather{
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(6em,1fr));
-    gap: 20px;
+    display: flex;
     max-width: 100%;
+    overflow-x: scroll;
   }
   .todaysWeather h5, .nextDays h5{
     font-size: 20px;
@@ -68,13 +85,13 @@ export default defineComponent({
     color: #fff;
     margin-bottom: 20px;
   }
+  .nextDays{
+    margin: 20px auto;
+  }
+  
   @media (max-width:768px) {
     .weatherView{
       text-align: center;
     }
-  }
-  .nextDays{
-    max-width: 822px;
-    margin: 20px auto;
   }
 </style>
