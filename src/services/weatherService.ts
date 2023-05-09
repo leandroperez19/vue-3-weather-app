@@ -22,6 +22,22 @@ export const getAutocompletedCountries = async (
   return { data, error };
 };
 
+export const getLocationByKey = async (key: string) => {
+  let data = null;
+  let error: string | null = null;
+
+  try {
+    const url = `/locations/v1/${key}`;
+    const res = await baseService.get(url);
+    data = res.data;
+  } catch (e) {
+    const err: AxiosError | any = e;
+    error = isAxiosError(err) ? err.message : `Unknown error: ${e}`;
+  }
+
+  return { data, error }
+}
+
 export const getCurrentWeather = async (
   locationKey: string
 ): Promise<DataResponse<DailyForecasts[] | null>> => {
@@ -47,7 +63,7 @@ export const getTwelveHoursForecast = async (
   let error: string | null = null;
 
   try {
-    const url = `/forecasts/v1/hourly/12hour/${locationKey}`;
+    const url = `/forecasts/v1/hourly/12hour/${locationKey}?metric=true`;
     const res = await baseService.get(url);
     data = res.data;
   } catch (e) {

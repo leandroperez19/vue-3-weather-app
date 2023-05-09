@@ -4,21 +4,11 @@
       <FaArrowLeft />
     </RouterLink>
     <button class="saveLocation_btn">SAVE LOCATION</button>
-    <CurrentWeatherInfo v-if="weather" :weather="weather[0]"  />
+    <CurrentWeatherInfo v-if="weather" :weather="weather[0]" :locationName="locationName" />
     <div class="todaysWeather">
       <h5>Today's Weather</h5>
       <div class="dailyWeather">
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
-        <HourCard />
+        <HourCard :twelveHoursForecast="twelveHoursForecast" />
       </div>
     </div>
     <div class="nextDays">
@@ -41,8 +31,6 @@ import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 
-
-
 export default defineComponent({
   components:{
     HourCard,
@@ -56,18 +44,30 @@ export default defineComponent({
     const routeParam = route.params.id;
     const store = useStore();
     const weather = computed(()=> store.state.currentWeather);
+    const locationName = computed(()=> store.state.selectedLocation);
+    const twelveHoursForecast = computed(()=> store.state.forecastsList);
 
-    const getCurrentWeatherInfo =() =>{
+    const getCurrentWeatherInfo = () => {
       store.dispatch('onGetWeatherData',routeParam);
+    }
+    const getLocationName = () => {
+      store.dispatch('onGetLocationInfo',routeParam);
+    }
+    const getTwelveHoursData = () => {
+      store.dispatch('onGetTwelveHoursForecast',routeParam)
     }
 
     onMounted(()=>{
       getCurrentWeatherInfo()
+      getLocationName()
+      getTwelveHoursData()
     });
 
     return {
       routeParam,
-      weather
+      weather,
+      locationName,
+      twelveHoursForecast
     };
   },
 });

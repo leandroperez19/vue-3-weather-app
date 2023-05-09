@@ -23,6 +23,7 @@ export interface locationInfo {
 
   export interface CurrentWeather {
     WeatherIcon: number;
+    LocalObservationDateTime: string;
     WeatherText: string;
     RelativeHumidity: number;
     Pressure:{

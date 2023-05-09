@@ -1,10 +1,10 @@
 <template>
   <div class="currentWeatherInfo">
-    <h1>Rabat, Morocco</h1>
-    <h2>Wednesday 26 April</h2>
+    <h1>{{`${locationName?.LocalizedName}, ${locationName?.Country.LocalizedName}`}}</h1>
+    <h2>{{formattedDate}}</h2>
     <div class="info">
       <div class="info_top-left">
-        <img :src="`https://developer.accuweather.com/sites/default/files/${weather?.WeatherIcon < 10 && '0' + weather?.WeatherIcon}-s.png`" alt="img">
+        <img :src="`https://developer.accuweather.com/sites/default/files/${weather?.WeatherIcon < 10 ? '0' + weather?.WeatherIcon : weather?.WeatherIcon}-s.png`" alt="img">
         <div class="info_top-left-temp">
           <h3>{{`${weather?.Temperature.Metric.Value}°`}}</h3>
           <span>{{`${weather?.WeatherText}`}}</span>
@@ -46,21 +46,25 @@
 <script lang="ts">
 
 import { computed, onMounted } from 'vue';
-import { type CurrentWeather } from '@/types/weather.interface';
+import { type CurrentWeather, type locationInfo } from '@/types/weather.interface';
 
 export default{
-  setup(props){
-    const {weather} = props;
+  setup({weather}){
+    const rawDate = weather && weather?.LocalObservationDateTime;
+    const date = new Date(rawDate);
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    const formattedDate = date.toLocaleDateString('en-EU', options);
+
     return{
-      weather
+      formattedDate
     }
-    // onMounted(()=>{
-    //   console.log(weather?.Temperature.Metric.Value)
-    // }); 
   },
   props:{
     weather:{
       type: Object as ()=> CurrentWeather
+    },
+    locationName:{
+      type: Object as ()=> locationInfo
     }
   }
 }
