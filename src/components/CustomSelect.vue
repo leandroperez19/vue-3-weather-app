@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 .select {
-  width: 100%;
+  width: calc(100% - 48px);
   margin: 0 auto;
   position: relative;
   max-width: calc(70em - 48px);
