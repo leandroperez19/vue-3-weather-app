@@ -93,3 +93,23 @@ export const getFiveDaysForecast = async (
 
   return { data, error };
 };
+
+export const getLocationByLatnLog = async (
+  latnlon: string
+): Promise<DataResponse<locationInfo | null>> => {
+  let data = null;
+  let error: string | null = null;
+
+  try {
+    const url = `/locations/v1/cities/geoposition/search?q=${latnlon}`;
+    const res = await baseService.get(url);
+    data = res.data;
+  } catch (e) {
+    const err: AxiosError | any = e;
+    error = isAxiosError(err) ? err.message : `Unknown error: ${e}`;
+  }
+
+  return { data, error };
+};
+
+

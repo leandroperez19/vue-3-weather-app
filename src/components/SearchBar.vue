@@ -3,17 +3,17 @@
     <label for="searchBar_input">
       <FaSearch class="searchBar_inputlens" />
     </label>
-    <input type="text" placeholder="Search for a city..." id="searchBar_input" @input="inputHandler" >
-    <TbCurrentLocation class="currentLocation_btn"/>
+    <input type="text" placeholder="Search for a city..." id="searchBar_input" @input="inputHandler" @focus="setOnFocus" >
+    <TbCurrentLocation class="currentLocation_btn" @click="$emit('checkGeoLocation')" />
   </div>
-  <CustomSelect :locations='locations' @onSelected="navigateToRoute" />
+  <CustomSelect v-if="showSelectorList" :locations='locations' @onSelected="navigateToRoute" @close="showSelectorList = false"/>
 </template>
 
 <script lang="ts">
   import {FaSearch} from 'vue3-icons/fa';
   import {TbCurrentLocation} from 'vue3-icons/tb';
   import CustomSelect from './CustomSelect.vue';
-  import {defineComponent,computed} from 'vue';
+  import {defineComponent,computed,ref, watch} from 'vue';
   import { useStore } from 'vuex';
   import { debounce } from 'lodash';
   import { useRouter } from 'vue-router';
@@ -30,10 +30,20 @@
       const router = useRouter();
       const store = useStore();
       const locations = computed(() => store.state.locationList);
+      const showSelectorList = ref(false);
       
-      const debouncedInputHandler = debounce((e: any) => {
-        store.dispatch('onGetLocationListByValue', e.target.value);
+      const debouncedInputHandler = debounce(async(e: Event) => {
+        const target = e.target as HTMLInputElement | null;
+        if (target) {
+          if(showSelectorList.value) showSelectorList.value = false
+          await store.dispatch('onGetLocationListByValue', target.value);
+          showSelectorList.value = true;
+        } 
       }, 700);
+
+      const setOnFocus = () =>{
+        showSelectorList.value = locations !== null && (locations as locationInfo[]).length > 0
+      }
 
       const inputHandler = (e: any) => {
         debouncedInputHandler(e);
@@ -45,8 +55,10 @@
 
       return{
         locations,
+        showSelectorList,
         inputHandler,
-        navigateToRoute
+        navigateToRoute,
+        setOnFocus
       }
     }
   })
@@ -63,6 +75,7 @@
     display: flex;
     align-items: center;
     background-color: #fff;
+    z-index: 50;
   }
   input{
     border: none;

@@ -7,10 +7,12 @@
   <div v-else-if="locations && locations.length === 0" class="select">
     No matches :c
   </div>
+  <div class="overlay" @click="$emit('close')" />
 </template>
 
 <script lang="ts" >
   import type { locationInfo } from '@/types/weather.interface';
+import { emit } from 'process';
 
   export default{
     props:{
@@ -30,6 +32,7 @@
     background-color: #ffffff;
     outline: 1px solid #000;
     border-radius: 0 0 4px 4px;
+    z-index: 50;
   }
   .option{
     border-top: 1px solid #000;
@@ -43,5 +46,12 @@
     background-color: #0d2d85;
     color: #fff;
     border: 1px solid #fff;
+  }
+  .overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 </style>

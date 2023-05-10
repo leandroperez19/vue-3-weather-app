@@ -1,7 +1,8 @@
 import { createStore, Commit } from 'vuex';
 import { type locationInfo, type DailyForecasts, type FiveDaysInfo, type CurrentWeather } from '@/types/weather.interface';
-import { getAutocompletedCountries, getCurrentWeather, getFiveDaysForecast, getLocationByKey, getTwelveHoursForecast } from '@/services/weatherService';
-
+import { getAutocompletedCountries, getCurrentWeather, getFiveDaysForecast, getLocationByKey, getLocationByLatnLog, getTwelveHoursForecast } from '@/services/weatherService';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 interface State {
   locationList: locationInfo[] | null,
   selectedLocation: locationInfo | null,
@@ -49,25 +50,46 @@ const store = createStore<State>({
     },
     async onGetWeatherData({ commit }: { commit: Commit }, key: string){
       const res = await getCurrentWeather(key);
+      if(res.error) toast.error(`There was an error: ${res.error}`);
       commit('setCurrentWeather',res.data);
     },
     async onGetLocationInfo({ commit }: { commit: Commit }, key: string){
       const res = await getLocationByKey(key);
+      if(res.error) toast.error(`There was an error: ${res.error}`);
       commit('setSelectedLocation',res.data);
     },
     async onGetTwelveHoursForecast({ commit }: { commit: Commit }, key: string){
       const res = await getTwelveHoursForecast(key);
+      if(res.error) toast.error(`There was an error: ${res.error}`);
       commit('setForecastsList',res.data);
     }, 
     async onGetFiveDaysForecast({ commit }: { commit: Commit }, key: string){
       const res = await getFiveDaysForecast(key);
+      if(res.error) toast.error(`There was an error: ${res.error}`);
       commit('setFiveDaysForecast',res.data);
     },
-    
-  },
-  getters: {
-    doubleCount(state: State) {
-     
+    onGetSavedLocations({ commit} : { commit: Commit }){
+      const savedLocationsRaw = localStorage.getItem('savedLocations')?? '[]';
+      const savedLocationsParsed = JSON.parse(savedLocationsRaw);
+      commit('setSavedLocations',savedLocationsParsed);
+    },
+    onSaveNewLocation({ commit, state } : { commit: Commit, state: State }){
+      const location = state.selectedLocation;
+      if(!location) return
+
+      const savedLocationsRaw = localStorage.getItem('savedLocations') ?? '[]';
+      const savedLocationsParsed : locationInfo[] = JSON.parse(savedLocationsRaw);
+
+      const exist = savedLocationsParsed.find(l =>l.Key === location.Key)
+
+      if(!exist) {
+        savedLocationsParsed.push(location);
+        commit('setSavedLocations',savedLocationsParsed);
+        localStorage.setItem('savedLocations',JSON.stringify(savedLocationsParsed));
+        toast.success('New location saved!')
+      }else{
+        toast.info('You have already save this location!')
+      }
     }
   }
 });

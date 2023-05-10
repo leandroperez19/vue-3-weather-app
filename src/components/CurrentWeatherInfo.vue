@@ -1,7 +1,7 @@
 <template>
   <div class="currentWeatherInfo">
     <h1>{{`${locationName?.LocalizedName}, ${locationName?.Country.LocalizedName}`}}</h1>
-    <h2>{{formattedDate}}</h2>
+    <h2>{{getShortDate(weather?.LocalObservationDateTime ?? '')}}</h2>
     <div class="info">
       <div class="info_top-left">
         <img :src="`https://developer.accuweather.com/sites/default/files/${weather?.WeatherIcon < 10 ? '0' + weather?.WeatherIcon : weather?.WeatherIcon}-s.png`" alt="img">
@@ -45,18 +45,20 @@
 
 <script lang="ts">
 
-import { computed, onMounted } from 'vue';
 import { type CurrentWeather, type locationInfo } from '@/types/weather.interface';
+import {getShortDate} from '@/utils/getFormattedTime';
 
 export default{
+
+  
   setup({weather}){
-    const rawDate = weather && weather?.LocalObservationDateTime;
-    const date = new Date(rawDate);
-    const options = { weekday: 'long', day: 'numeric', month: 'long' };
-    const formattedDate = date.toLocaleDateString('en-EU', options);
+    // const rawDate = weather && weather?.LocalObservationDateTime;
+    // const date = new Date(rawDate);
+    // const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    // const formattedDate = date.toLocaleDateString('en-EU', options);
 
     return{
-      formattedDate
+      getShortDate
     }
   },
   props:{

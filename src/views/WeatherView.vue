@@ -3,7 +3,9 @@
     <RouterLink to="/" class="goBack_btn" >
       <FaArrowLeft />
     </RouterLink>
-    <button class="saveLocation_btn">SAVE LOCATION</button>
+    <button class="saveLocation_btn" v-if="selectedLocation" @click="saveNewLocation" >
+      SAVE LOCATION
+    </button>
     <CurrentWeatherInfo v-if="weather" :weather="weather[0]" :locationName="locationName" />
     <div class="todaysWeather">
       <h5>Today's Weather</h5>
@@ -27,6 +29,7 @@ import {defineComponent} from 'vue';
 import {FaArrowLeft} from 'vue3-icons/fa';
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
+import type { locationInfo } from '@/types/weather.interface';
 
 
 export default defineComponent({
@@ -45,6 +48,7 @@ export default defineComponent({
     const locationName = computed(()=> store.state.selectedLocation);
     const twelveHoursForecast = computed(()=> store.state.forecastsList);
     const fiveDaysData = computed(()=> store.state.fiveDaysForecast);
+    const selectedLocation = computed(()=> store.state.selectedLocation);
 
     const getCurrentWeatherData = () => {
       store.dispatch('onGetWeatherData',routeParam);
@@ -57,6 +61,9 @@ export default defineComponent({
     }
     const getFiveDaysData = () => {
       store.dispatch('onGetFiveDaysForecast',routeParam)
+    }
+    const saveNewLocation = () => {
+      store.dispatch('onSaveNewLocation')
     }
 
     onMounted(()=>{
@@ -71,7 +78,9 @@ export default defineComponent({
       weather,
       locationName,
       twelveHoursForecast,
-      fiveDaysData
+      fiveDaysData,
+      selectedLocation,
+      saveNewLocation,
     };
   },
 });

@@ -7,7 +7,7 @@ const baseService: AxiosInstance = axios.create({
 baseService.interceptors.request.use((config) => {
   config.params = {
     ...config.params,
-    apikey: "VB4GuQNE6VRc2rKdiIiINtK3hIe34tYO",
+    apikey: "M6xb4AQMzNXHR2wPj4RrNG7GSUFzDbCL",
   };
   return config;
 });
