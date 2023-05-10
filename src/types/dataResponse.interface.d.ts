@@ -1,5 +1,4 @@
 export default interface DataResponse<T> {
-    data: T;
-    error: string | null;
-  }
-  
+  data: T;
+  error: string | null;
+}

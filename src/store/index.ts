@@ -1,15 +1,27 @@
-import { createStore, Commit } from 'vuex';
-import { type locationInfo, type DailyForecasts, type FiveDaysInfo, type CurrentWeather } from '@/types/weather.interface';
-import { getAutocompletedCountries, getCurrentWeather, getFiveDaysForecast, getLocationByKey, getLocationByLatnLog, getTwelveHoursForecast } from '@/services/weatherService';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { createStore, Commit } from "vuex";
+import {
+  type locationInfo,
+  type DailyForecasts,
+  type FiveDaysInfo,
+  type CurrentWeather,
+} from "@/types/weather.interface";
+import {
+  getAutocompletedCountries,
+  getCurrentWeather,
+  getFiveDaysForecast,
+  getLocationByKey,
+  getLocationByLatnLog,
+  getTwelveHoursForecast,
+} from "@/services/weatherService";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 interface State {
-  locationList: locationInfo[] | null,
-  selectedLocation: locationInfo | null,
-  currentWeather: CurrentWeather | null,
-  forecastsList: DailyForecasts[] | null,
-  fiveDaysForecast: FiveDaysInfo | null,
-  savedLocations: locationInfo[] | null
+  locationList: locationInfo[] | null;
+  selectedLocation: locationInfo | null;
+  currentWeather: CurrentWeather | null;
+  forecastsList: DailyForecasts[] | null;
+  fiveDaysForecast: FiveDaysInfo | null;
+  savedLocations: locationInfo[] | null;
 }
 
 const store = createStore<State>({
@@ -20,78 +32,88 @@ const store = createStore<State>({
       currentWeather: null,
       forecastsList: null,
       fiveDaysForecast: null,
-      savedLocations: null
+      savedLocations: null,
     };
   },
   mutations: {
     setLocationList(state: State, list: locationInfo[] | null) {
-      state.locationList = list
+      state.locationList = list;
     },
     setSelectedLocation(state: State, location: locationInfo | null) {
-      state.selectedLocation = location
+      state.selectedLocation = location;
     },
     setCurrentWeather(state: State, weather: CurrentWeather | null) {
-      state.currentWeather = weather
+      state.currentWeather = weather;
     },
     setForecastsList(state: State, list: DailyForecasts[] | null) {
-      state.forecastsList = list
+      state.forecastsList = list;
     },
     setFiveDaysForecast(state: State, info: FiveDaysInfo | null) {
-      state.fiveDaysForecast = info
+      state.fiveDaysForecast = info;
     },
     setSavedLocations(state: State, list: locationInfo[] | null) {
-      state.savedLocations = list
+      state.savedLocations = list;
     },
   },
   actions: {
-    async onGetLocationListByValue({ commit }: { commit: Commit }, value: string){
+    async onGetLocationListByValue(
+      { commit }: { commit: Commit },
+      value: string
+    ) {
       const res = await getAutocompletedCountries(value);
-      commit('setLocationList',res.data);
+      commit("setLocationList", res.data);
     },
-    async onGetWeatherData({ commit }: { commit: Commit }, key: string){
+    async onGetWeatherData({ commit }: { commit: Commit }, key: string) {
       const res = await getCurrentWeather(key);
-      if(res.error) toast.error(`There was an error: ${res.error}`);
-      commit('setCurrentWeather',res.data);
+      if (res.error) toast.error(`There was an error: ${res.error}`);
+      commit("setCurrentWeather", res.data);
     },
-    async onGetLocationInfo({ commit }: { commit: Commit }, key: string){
+    async onGetLocationInfo({ commit }: { commit: Commit }, key: string) {
       const res = await getLocationByKey(key);
-      if(res.error) toast.error(`There was an error: ${res.error}`);
-      commit('setSelectedLocation',res.data);
+      if (res.error) toast.error(`There was an error: ${res.error}`);
+      commit("setSelectedLocation", res.data);
     },
-    async onGetTwelveHoursForecast({ commit }: { commit: Commit }, key: string){
+    async onGetTwelveHoursForecast(
+      { commit }: { commit: Commit },
+      key: string
+    ) {
       const res = await getTwelveHoursForecast(key);
-      if(res.error) toast.error(`There was an error: ${res.error}`);
-      commit('setForecastsList',res.data);
-    }, 
-    async onGetFiveDaysForecast({ commit }: { commit: Commit }, key: string){
+      if (res.error) toast.error(`There was an error: ${res.error}`);
+      commit("setForecastsList", res.data);
+    },
+    async onGetFiveDaysForecast({ commit }: { commit: Commit }, key: string) {
       const res = await getFiveDaysForecast(key);
-      if(res.error) toast.error(`There was an error: ${res.error}`);
-      commit('setFiveDaysForecast',res.data);
+      if (res.error) toast.error(`There was an error: ${res.error}`);
+      commit("setFiveDaysForecast", res.data);
     },
-    onGetSavedLocations({ commit} : { commit: Commit }){
-      const savedLocationsRaw = localStorage.getItem('savedLocations')?? '[]';
+    onGetSavedLocations({ commit }: { commit: Commit }) {
+      const savedLocationsRaw = localStorage.getItem("savedLocations") ?? "[]";
       const savedLocationsParsed = JSON.parse(savedLocationsRaw);
-      commit('setSavedLocations',savedLocationsParsed);
+      commit("setSavedLocations", savedLocationsParsed);
     },
-    onSaveNewLocation({ commit, state } : { commit: Commit, state: State }){
+    onSaveNewLocation({ commit, state }: { commit: Commit; state: State }) {
       const location = state.selectedLocation;
-      if(!location) return
+      if (!location) return;
 
-      const savedLocationsRaw = localStorage.getItem('savedLocations') ?? '[]';
-      const savedLocationsParsed : locationInfo[] = JSON.parse(savedLocationsRaw);
+      const savedLocationsRaw = localStorage.getItem("savedLocations") ?? "[]";
+      const savedLocationsParsed: locationInfo[] =
+        JSON.parse(savedLocationsRaw);
 
-      const exist = savedLocationsParsed.find(l =>l.Key === location.Key)
+      const exist = savedLocationsParsed.find((l) => l.Key === location.Key);
 
-      if(!exist) {
+      if (!exist) {
         savedLocationsParsed.push(location);
-        commit('setSavedLocations',savedLocationsParsed);
-        localStorage.setItem('savedLocations',JSON.stringify(savedLocationsParsed));
-        toast.success('New location saved!')
-      }else{
-        toast.info('You have already save this location!')
+        commit("setSavedLocations", savedLocationsParsed);
+        localStorage.setItem(
+          "savedLocations",
+          JSON.stringify(savedLocationsParsed)
+        );
+        toast.success("New location saved!");
+      } else {
+        toast.info("You have already save this location!");
       }
-    }
-  }
+    },
+  },
 });
 
 export default store;

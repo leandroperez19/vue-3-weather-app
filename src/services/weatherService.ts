@@ -1,8 +1,11 @@
 import { AxiosError, isAxiosError } from "axios";
 import baseService from "./baseServiceConfig";
-import { type DailyForecasts, type FiveDaysInfo, type locationInfo } from "@/types/weather.interface";
+import {
+  type DailyForecasts,
+  type FiveDaysInfo,
+  type locationInfo,
+} from "@/types/weather.interface";
 import type DataResponse from "@/types/dataResponse.interface";
-
 
 export const getAutocompletedCountries = async (
   value: string
@@ -24,7 +27,7 @@ export const getAutocompletedCountries = async (
 
 export const getLocationByKey = async (
   key: string
-  ): Promise<DataResponse<DailyForecasts[] | null>> => {
+): Promise<DataResponse<DailyForecasts[] | null>> => {
   let data = null;
   let error: string | null = null;
 
@@ -37,8 +40,8 @@ export const getLocationByKey = async (
     error = isAxiosError(err) ? err.message : `Unknown error: ${e}`;
   }
 
-  return { data, error }
-}
+  return { data, error };
+};
 
 export const getCurrentWeather = async (
   locationKey: string
@@ -111,5 +114,3 @@ export const getLocationByLatnLog = async (
 
   return { data, error };
 };
-
-
