@@ -64,6 +64,7 @@ const store = createStore<State>({
       commit("setLocationList", res.data);
     },
     async onGetWeatherData({ commit }: { commit: Commit }, key: string) {
+      commit("setCurrentWeather", null);
       const res = await getCurrentWeather(key);
       if (res.error) toast.error(`There was an error: ${res.error}`);
       commit("setCurrentWeather", res.data);
@@ -110,7 +111,7 @@ const store = createStore<State>({
         );
         toast.success("New location saved!");
       } else {
-        toast.info("You have already save this location!");
+        toast.info("You have already saved this location!");
       }
     },
   },

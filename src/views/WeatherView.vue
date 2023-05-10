@@ -1,5 +1,5 @@
 <template>
-  <div class="weatherView">
+  <div class="weatherView" v-if="weather">
     <RouterLink to="/" class="goBack_btn">
       <FaArrowLeft />
     </RouterLink>
@@ -29,6 +29,9 @@
       <DayCard v-if="fiveDaysData" :fiveDaysData="fiveDaysData" />
     </div>
   </div>
+  <div v-else class="loader">
+    <Loader />
+  </div>
 </template>
 
 <script lang="ts">
@@ -40,7 +43,7 @@ import { defineComponent } from "vue";
 import { FaArrowLeft } from "vue3-icons/fa";
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import type { locationInfo } from "@/types/weather.interface";
+import Loader from "@/components/Loader.vue";
 
 export default defineComponent({
   components: {
@@ -49,7 +52,8 @@ export default defineComponent({
     DayCard,
     FaArrowLeft,
     RouterLink,
-  },
+    Loader
+},
   setup() {
     const route = useRoute();
     const routeParam = route.params.id;
@@ -158,7 +162,16 @@ export default defineComponent({
 .nextDays {
   margin: 20px auto;
 }
-
+.loader{
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 @media (max-width: 768px) {
   .weatherView {
     text-align: center;

@@ -48,14 +48,29 @@ export default {
 }
 .savedCities_cities {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
   margin-top: 20px;
 }
+@media (min-width: 524px) {
+  .savedCities_cities {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .savedCities_cities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .savedCities_cities {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .savedCities_cities-city {
   padding: 15px;
   text-align: center;
-  background-color: #1c47a0;
+  background-color: #17397e;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s;

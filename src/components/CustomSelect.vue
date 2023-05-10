@@ -9,7 +9,7 @@
       {{ location.LocalizedName }}
     </li>
   </ul>
-  <div v-else-if="locations && locations.length === 0" class="select">
+  <div v-else-if="locations && locations.length === 0" class="select noMatches">
     No matches
   </div>
   <div class="overlay" @click="$emit('close')" />
@@ -32,11 +32,18 @@ export default {
   width: 100%;
   margin: 0 auto;
   position: relative;
-  max-width: 70em;
+  max-width: calc(70em - 48px);
   background-color: #ffffff;
   outline: 1px solid #000;
   border-radius: 0 0 4px 4px;
   z-index: 50;
+  position: absolute;
+  right: 24px;
+}
+.noMatches{
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 .option {
   border-top: 1px solid #000;
