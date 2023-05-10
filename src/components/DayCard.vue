@@ -1,32 +1,48 @@
 <template>
-  <div class="dayCard">
+  <div class="dayCard" v-for="day in fiveDaysData?.DailyForecasts">
     <div class="day">
-      <h4>Wed</h4>
-      <span>24/04</span>
+      <h4>{{getShortDate(day.Date)}}</h4>
+      <span>{{getShortNumericDate(day.Date)}}</span>
     </div>
-    <img src="https://developer.accuweather.com/sites/default/files/01-s.png" alt="sun">
+    <img :src="`https://developer.accuweather.com/sites/default/files/${day.Day.Icon < 10 ? '0' + day.Day.Icon : day.Day.Icon}-s.png`" alt="sun">
     <div class="low">
-      <h4>30°</h4>
+      <h4>{{`${getFahrenheitToCelsius(day.Temperature.Minimum.Value)}°`}}</h4>
       <span>Low</span>
     </div>
     <div class="high">
-      <h4>30°</h4>
+      <h4>{{`${getFahrenheitToCelsius(day.Temperature.Maximum.Value)}°`}}</h4>
       <span>High</span>
     </div>
     <div class="rain">
-      <h4>0%</h4>
+      <h4>{{`${day.Day.RainProbability}%`}}</h4>
       <span>Rain</span>
     </div>
     <div class="wind">
-      <h4>9.4mph</h4>
+      <h4>{{`${day.Day.Wind.Speed.Value}mph`}}</h4>
       <span>Wind</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-export default{
 
+import { type FiveDaysInfo } from '@/types/weather.interface';
+import getFahrenheitToCelsius from '@/utils/getFahrenheitToCelsius';
+import { getShortDate, getShortNumericDate } from '@/utils/getFormattedTime';;
+
+export default{
+  props:{
+    fiveDaysData:{
+      type: Object as ()=> FiveDaysInfo
+    }
+  },
+  setup(){
+    return {
+      getFahrenheitToCelsius,
+      getShortDate,
+      getShortNumericDate
+    }
+  }
 }
 </script>
 

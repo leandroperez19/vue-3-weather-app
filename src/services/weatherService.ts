@@ -22,7 +22,9 @@ export const getAutocompletedCountries = async (
   return { data, error };
 };
 
-export const getLocationByKey = async (key: string) => {
+export const getLocationByKey = async (
+  key: string
+  ): Promise<DataResponse<DailyForecasts[] | null>> => {
   let data = null;
   let error: string | null = null;
 
@@ -81,7 +83,7 @@ export const getFiveDaysForecast = async (
   let error: string | null = null;
 
   try {
-    const url = `/forecasts/v1/daily/5day/${locationKey}`;
+    const url = `/forecasts/v1/daily/5day/${locationKey}?details=true`;
     const res = await baseService.get(url);
     data = res.data;
   } catch (e) {

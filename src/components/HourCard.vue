@@ -1,6 +1,6 @@
 <template>
   <div class="hourCard" v-for="hour in twelveHoursForecast" >
-    <span>{{ getFormattedHour(hour) }}</span>
+    <span>{{ getFormattedHour(hour.DateTime) }}</span>
     <img :src="`https://developer.accuweather.com/sites/default/files/${hour.WeatherIcon < 10 ? '0' + hour.WeatherIcon : hour.WeatherIcon}-s.png`" alt="sun">
     <span>{{`${hour.Temperature.Value}°`}}</span>
   </div>
@@ -8,28 +8,19 @@
 
 <script lang="ts">
 import type { DailyForecasts } from '@/types/weather.interface';
+import { getFormattedHour } from '@/utils/getFormattedTime';
 
   export default{
-    setup({twelveHoursForecast}){
-      const getFormattedHour = (hour:DailyForecasts) => {
-        const dateTimeString = hour.DateTime;
-        const dateTime = new Date(dateTimeString);
-        const hours = dateTime.getHours();
-        const minutes = dateTime.getMinutes();
-        const ampm = hours >= 12 ? 'pm' : 'am';
-        const formattedHours = hours % 12 || 12;
-        const formattedTime = `${formattedHours}:${minutes.toString().padStart(2, '0')}${ampm}`;
-        return formattedTime
-      }
-      return{
-        getFormattedHour
-      }
-    },
     props:{
       twelveHoursForecast:{
         type: Array as ()=> DailyForecasts[]
       }
-    }
+    },
+    setup(){
+      return{
+        getFormattedHour
+      }
+    } 
   }
 </script>
 

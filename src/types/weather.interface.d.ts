@@ -72,7 +72,25 @@ export interface locationInfo {
     Severity: number;
   }
   
+
+  export interface Daily {
+    Date: string;
+    Day: {
+      Icon:number;
+      RainProbability: number;
+      Wind:{
+        Speed:{
+          Value: number
+        }
+      }
+    };
+    Temperature: {
+      Maximum: {Value: number}
+      Minimum: {Value: number}
+    }
+  }
+
   export interface FiveDaysInfo {
-    DailyForecasts: DailyForecasts[];
+    DailyForecasts: Daily[];
     Headline: Headline;
   }

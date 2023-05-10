@@ -8,14 +8,12 @@
     <div class="todaysWeather">
       <h5>Today's Weather</h5>
       <div class="dailyWeather">
-        <HourCard :twelveHoursForecast="twelveHoursForecast" />
+        <HourCard  v-if="twelveHoursForecast" :twelveHoursForecast="twelveHoursForecast" />
       </div>
     </div>
     <div class="nextDays">
-      <h5>Next 3 days</h5>
-      <DayCard />
-      <DayCard />
-      <DayCard />
+      <h5>Next 5 days</h5>
+      <DayCard v-if="fiveDaysData" :fiveDaysData="fiveDaysData" />
     </div>
   </div>
 </template>
@@ -46,8 +44,9 @@ export default defineComponent({
     const weather = computed(()=> store.state.currentWeather);
     const locationName = computed(()=> store.state.selectedLocation);
     const twelveHoursForecast = computed(()=> store.state.forecastsList);
+    const fiveDaysData = computed(()=> store.state.fiveDaysForecast);
 
-    const getCurrentWeatherInfo = () => {
+    const getCurrentWeatherData = () => {
       store.dispatch('onGetWeatherData',routeParam);
     }
     const getLocationName = () => {
@@ -56,18 +55,23 @@ export default defineComponent({
     const getTwelveHoursData = () => {
       store.dispatch('onGetTwelveHoursForecast',routeParam)
     }
+    const getFiveDaysData = () => {
+      store.dispatch('onGetFiveDaysForecast',routeParam)
+    }
 
     onMounted(()=>{
-      getCurrentWeatherInfo()
+      getCurrentWeatherData()
       getLocationName()
       getTwelveHoursData()
+      getFiveDaysData()
     });
 
     return {
       routeParam,
       weather,
       locationName,
-      twelveHoursForecast
+      twelveHoursForecast,
+      fiveDaysData
     };
   },
 });

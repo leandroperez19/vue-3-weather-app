@@ -1,6 +1,6 @@
 import { createStore, Commit } from 'vuex';
 import { type locationInfo, type DailyForecasts, type FiveDaysInfo, type CurrentWeather } from '@/types/weather.interface';
-import { getAutocompletedCountries, getCurrentWeather, getLocationByKey, getLocationNameByKey, getTwelveHoursForecast } from '@/services/weatherService';
+import { getAutocompletedCountries, getCurrentWeather, getFiveDaysForecast, getLocationByKey, getTwelveHoursForecast } from '@/services/weatherService';
 
 interface State {
   locationList: locationInfo[] | null,
@@ -40,7 +40,7 @@ const store = createStore<State>({
     },
     setSavedLocations(state: State, list: locationInfo[] | null) {
       state.savedLocations = list
-    }
+    },
   },
   actions: {
     async onGetLocationListByValue({ commit }: { commit: Commit }, value: string){
@@ -57,9 +57,13 @@ const store = createStore<State>({
     },
     async onGetTwelveHoursForecast({ commit }: { commit: Commit }, key: string){
       const res = await getTwelveHoursForecast(key);
-      console.log(res.data)
       commit('setForecastsList',res.data);
-    }
+    }, 
+    async onGetFiveDaysForecast({ commit }: { commit: Commit }, key: string){
+      const res = await getFiveDaysForecast(key);
+      commit('setFiveDaysForecast',res.data);
+    },
+    
   },
   getters: {
     doubleCount(state: State) {
