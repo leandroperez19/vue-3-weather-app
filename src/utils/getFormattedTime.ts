@@ -11,7 +11,7 @@ export const getFormattedHour = (hour: string) => {
   return formattedTime;
 };
 
-export const getShorterDay = (date: string) => {
+export const getShortWeekday = (date: string) => {
   const dateTime = new Date(date);
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const dayOfWeek = daysOfWeek[dateTime.getDay()];
@@ -28,7 +28,7 @@ export const getShortNumericDate = (date: string) => {
 
 export const getShortDate = (rawDate: string) => {
   const date = new Date(rawDate);
-  const options = { weekday: "long", day: "numeric", month: "long" };
+  const options : Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long" };
   const formattedDate = date.toLocaleDateString("en-EU", options);
   return formattedDate;
 };

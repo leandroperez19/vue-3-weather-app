@@ -72,7 +72,7 @@ export interface Headline {
   Severity: number;
 }
 
-export interface Daily {
+export interface NextDaysForecast {
   Date: string;
   Day: {
     Icon: number;
@@ -90,6 +90,6 @@ export interface Daily {
 }
 
 export interface FiveDaysInfo {
-  DailyForecasts: Daily[];
+  DailyForecasts: NextDaysForecast[];
   Headline: Headline;
 }

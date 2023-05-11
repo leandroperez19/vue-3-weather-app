@@ -1,7 +1,7 @@
 <template>
   <div class="dayCard" v-for="day in fiveDaysData?.DailyForecasts">
     <div class="day">
-      <h4>{{ getShorterDay(day.Date) }}</h4>
+      <h4>{{ getShortWeekday(day.Date) }}</h4>
       <span>{{ getShortNumericDate(day.Date) }}</span>
     </div>
     <img
@@ -32,13 +32,13 @@
 <script lang="ts">
 import { type FiveDaysInfo } from "@/types/weather.interface";
 import getFahrenheitToCelsius from "@/utils/getFahrenheitToCelsius";
-import { getShortNumericDate, getShorterDay } from "@/utils/getFormattedTime";
+import { getShortNumericDate, getShortWeekday } from "@/utils/getFormattedTime";
 import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
   props: {
     fiveDaysData: {
-      type: Object as PropType<FiveDaysInfo>,
+      type: Object as PropType<FiveDaysInfo | null>,
       required: true
     },
   },
@@ -46,7 +46,7 @@ export default defineComponent({
     return {
       getFahrenheitToCelsius,
       getShortNumericDate,
-      getShorterDay
+      getShortWeekday
     };
   },
 });

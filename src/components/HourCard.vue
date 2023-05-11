@@ -19,7 +19,7 @@ import { defineComponent, type PropType } from "vue";
 export default defineComponent({
   props: {
     twelveHoursForecast: {
-      type: Array as PropType<DailyForecasts[]>,
+      type: Array as PropType<DailyForecasts[] | null>,
       required: true
     },
   },

@@ -67,8 +67,9 @@ import {
   type locationInfo,
 } from "@/types/weather.interface";
 import { getShortDate } from "@/utils/getFormattedTime";
+import { defineComponent, type PropType } from "vue";
 
-export default {
+export default defineComponent({
   setup() {
     return {
       getShortDate,
@@ -76,13 +77,15 @@ export default {
   },
   props: {
     weather: {
-      type: Object as () => CurrentWeather,
+      type: Object as PropType<CurrentWeather | null>,
+      required: true
     },
     locationName: {
-      type: Object as () => locationInfo,
+      type: Object as PropType<locationInfo | null>,
+      required: true
     },
   },
-};
+});
 </script>
 
 <style>
