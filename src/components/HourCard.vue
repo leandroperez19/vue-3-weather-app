@@ -14,11 +14,13 @@
 <script lang="ts">
 import type { DailyForecasts } from "@/types/weather.interface";
 import { getFormattedHour } from "@/utils/getFormattedTime";
+import { defineComponent, type PropType } from "vue";
 
-export default {
+export default defineComponent({
   props: {
     twelveHoursForecast: {
-      type: Array as () => DailyForecasts[],
+      type: Array as PropType<DailyForecasts[]>,
+      required: true
     },
   },
   setup() {
@@ -26,7 +28,7 @@ export default {
       getFormattedHour,
     };
   },
-};
+});
 </script>
 
 <style>

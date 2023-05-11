@@ -10,7 +10,7 @@
       <div class="info_top-left">
         <img
           :src="`https://developer.accuweather.com/sites/default/files/${
-            weather?.WeatherIcon < 10
+            weather && weather?.WeatherIcon < 10
               ? '0' + weather?.WeatherIcon
               : weather?.WeatherIcon
           }-s.png`"

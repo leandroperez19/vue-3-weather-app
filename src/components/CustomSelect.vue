@@ -17,14 +17,16 @@
 
 <script lang="ts">
 import type { locationInfo } from "@/types/weather.interface";
+import { defineComponent, type PropType } from "vue";
 
-export default {
+export default defineComponent({
   props: {
     locations: {
-      type: Array as () => locationInfo[] | null,
+      type: Array as PropType<locationInfo[] | null>,
+      required: true,
     },
   },
-};
+});
 </script>
 
 <style scoped>
@@ -40,7 +42,7 @@ export default {
   position: absolute;
   right: 24px;
 }
-.noMatches{
+.noMatches {
   padding: 10px 15px;
   font-size: 16px;
   font-weight: 500;

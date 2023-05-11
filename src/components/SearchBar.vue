@@ -11,10 +11,7 @@
       @input="inputHandler"
       @focus="setOnFocus"
     />
-    <TbCurrentLocation
-      class="currentLocation_btn"
-      @click="$emit('checkGeoLocation')"
-    />
+    <TbCurrentLocation class="currentLocation_btn" @click="getGeoLocation" />
   </div>
   <CustomSelect
     v-if="showSelectorList"
@@ -32,6 +29,8 @@ import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { debounce } from "lodash";
 import { useRouter } from "vue-router";
+import { getLocationByLatnLog } from "@/services/weatherService";
+import { toast } from "vue3-toastify";
 import type { locationInfo } from "@/types/weather.interface";
 
 export default defineComponent({
@@ -57,7 +56,8 @@ export default defineComponent({
 
     const setOnFocus = () => {
       showSelectorList.value =
-        locations !== null && (locations as locationInfo[]).length > 0;
+        locations !== null &&
+        (locations as unknown as locationInfo[]).length > 0;
     };
 
     const inputHandler = (e: any) => {
@@ -68,12 +68,33 @@ export default defineComponent({
       router.push(`/${location.Key}`);
     };
 
+    const getGeoLocation = () => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const res = await getLocationByLatnLog(`${latitude},${longitude}`);
+
+            if (res.error) toast.error(`There was an error: ${res.error}`);
+            if (res.data?.Key) router.push(`${res.data?.Key}`);
+          },
+          (error) => {
+            toast.error(`Error on getting geoLocation: ${error.message}`);
+          }
+        );
+      } else {
+        toast.error("Geolocation is not compatible with this browser!");
+      }
+    };
+
     return {
       locations,
       showSelectorList,
       inputHandler,
       navigateToRoute,
       setOnFocus,
+      getGeoLocation,
     };
   },
 });
