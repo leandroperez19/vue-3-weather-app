@@ -1,4 +1,5 @@
-import { createStore, Commit } from "vuex";
+import { createStore, Commit, useStore as baseUseStore, Store } from "vuex";
+import { type InjectionKey } from "vue";
 import {
   type locationInfo,
   type DailyForecasts,
@@ -10,7 +11,6 @@ import {
   getCurrentWeather,
   getFiveDaysForecast,
   getLocationByKey,
-  getLocationByLatnLog,
   getTwelveHoursForecast,
 } from "@/services/weatherService";
 import { toast } from "vue3-toastify";
@@ -24,7 +24,9 @@ interface State {
   savedLocations: locationInfo[] | null;
 }
 
-const store = createStore<State>({
+export const key: InjectionKey<Store<State>> = Symbol();
+
+export const store = createStore<State>({
   state() {
     return {
       locationList: null,
@@ -56,10 +58,7 @@ const store = createStore<State>({
     },
   },
   actions: {
-    async onGetLocationListByValue(
-      { commit }: { commit: Commit },
-      value: string
-    ) {
+    async onGetLocationListByValue({ commit }: { commit: Commit }, value: string) {
       const res = await getAutocompletedCountries(value);
       commit("setLocationList", res.data);
     },
@@ -74,10 +73,7 @@ const store = createStore<State>({
       if (res.error) toast.error(`There was an error: ${res.error}`);
       commit("setSelectedLocation", res.data);
     },
-    async onGetTwelveHoursForecast(
-      { commit }: { commit: Commit },
-      key: string
-    ) {
+    async onGetTwelveHoursForecast({ commit }: { commit: Commit }, key: string) {
       const res = await getTwelveHoursForecast(key);
       if (res.error) toast.error(`There was an error: ${res.error}`);
       commit("setForecastsList", res.data);
@@ -117,4 +113,6 @@ const store = createStore<State>({
   },
 });
 
-export default store;
+export function useStore(){
+  return baseUseStore(key);
+}

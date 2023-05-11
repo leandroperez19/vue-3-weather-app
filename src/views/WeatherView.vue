@@ -42,7 +42,7 @@ import DayCard from "@/components/DayCard.vue";
 import { defineComponent } from "vue";
 import { FaArrowLeft } from "vue3-icons/fa";
 import { computed, onMounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "@/store";
 import Loader from "@/components/Loader.vue";
 
 export default defineComponent({
@@ -52,8 +52,8 @@ export default defineComponent({
     DayCard,
     FaArrowLeft,
     RouterLink,
-    Loader
-},
+    Loader,
+  },
   setup() {
     const route = useRoute();
     const routeParam = route.params.id;
@@ -162,7 +162,7 @@ export default defineComponent({
 .nextDays {
   margin: 20px auto;
 }
-.loader{
+.loader {
   position: fixed;
   right: 0;
   left: 0;

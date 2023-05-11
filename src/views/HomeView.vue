@@ -9,7 +9,7 @@
 import SearchBar from "@/components/SearchBar.vue";
 import SavedCities from "@/components/SavedCities.vue";
 import { computed, defineComponent, onMounted } from "vue";
-import { useStore } from "vuex";
+import { useStore } from '@/store'
 import "vue3-toastify/dist/index.css";
 
 export default defineComponent({
