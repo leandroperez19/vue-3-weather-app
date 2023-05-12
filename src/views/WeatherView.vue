@@ -121,6 +121,7 @@ export default defineComponent({
   justify-content: center;
   width: fit-content;
   cursor: pointer;
+  color: #fff;
   transition: background-color cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s;
 }
 .goBack_btn:hover {

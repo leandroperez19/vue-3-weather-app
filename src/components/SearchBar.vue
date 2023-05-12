@@ -11,7 +11,8 @@
       @input="inputHandler"
       @focus="setOnFocus"
     />
-    <TbCurrentLocation class="currentLocation_btn" @click="getGeoLocation" />
+    <TbCurrentLocation class="currentLocation_btn" @click="getGeoLocation" v-if="!showLoader"/>
+    <Loader v-else class="loader" />
   </div>
   <CustomSelect
     v-if="showSelectorList"
@@ -32,18 +33,21 @@ import { useRouter } from "vue-router";
 import { getLocationByLatnLog } from "@/services/weatherService";
 import { toast } from "vue3-toastify";
 import type { locationInfo } from "@/types/weather.interface";
+import Loader from "./Loader.vue";
 
 export default defineComponent({
   components: {
     CustomSelect,
+    Loader,
     FaSearch,
-    TbCurrentLocation,
+    TbCurrentLocation
   },
   setup() {
     const router = useRouter();
     const store = useStore();
     const locations = computed(() => store.state.locationList);
     const showSelectorList = ref(false);
+    const showLoader = ref(false)
 
     const debouncedInputHandler = debounce(async (e: Event) => {
       const target = e.target as HTMLInputElement | null;
@@ -69,12 +73,14 @@ export default defineComponent({
     };
 
     const getGeoLocation = () => {
+      showLoader.value = true
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const res = await getLocationByLatnLog(`${latitude},${longitude}`);
+            showLoader.value = false
 
             if (res.error) toast.error(`There was an error: ${res.error}`);
             if (res.data?.Key) router.push(`${res.data?.Key}`);
@@ -91,6 +97,7 @@ export default defineComponent({
     return {
       locations,
       showSelectorList,
+      showLoader,
       inputHandler,
       navigateToRoute,
       setOnFocus,
@@ -140,5 +147,8 @@ svg {
 }
 .currentLocation_btn:hover {
   color: blue;
+}
+.loader{
+  margin-right: 15px;
 }
 </style>

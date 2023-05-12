@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-import { store } from "@/store";
 import type { locationInfo } from "@/types/weather.interface";
 import { defineComponent, type PropType } from "vue";
 import { VscClose } from "vue3-icons/vsc";
@@ -101,6 +100,7 @@ export default defineComponent({
   display: none;
   font-size: 25px;
   padding: 2px;
+  transition-delay: 0.2s;
   transition: all ease 0.3s;
   border-radius: 4px;
 }

@@ -2,7 +2,7 @@
   <div class="currentWeatherInfo">
     <h1>
       {{
-        `${locationName?.LocalizedName}, ${locationName?.Country.LocalizedName}`
+        `${locationName?.LocalizedName ?? ''}, ${locationName?.Country.LocalizedName ?? ''}`
       }}
     </h1>
     <h2>{{ getShortDate(weather?.LocalObservationDateTime ?? "") }}</h2>
@@ -25,7 +25,7 @@
         <div class="high">
           <h4>
             {{
-              `${weather?.TemperatureSummary.Past24HourRange.Maximum.Metric.Value}°`
+              `${weather?.TemperatureSummary.Past24HourRange.Maximum.Metric.Value ?? ''}°`
             }}
           </h4>
           <span>High</span>
@@ -33,26 +33,26 @@
         <div class="low">
           <h4>
             {{
-              `${weather?.TemperatureSummary.Past24HourRange.Minimum.Metric.Value}°`
+              `${weather?.TemperatureSummary.Past24HourRange.Minimum.Metric.Value ?? ''}°`
             }}
           </h4>
           <span>Low</span>
         </div>
         <div class="wind">
-          <h4>{{ `${weather?.Wind.Speed.Imperial.Value}mph` }}</h4>
+          <h4>{{ `${weather?.Wind.Speed.Imperial.Value ?? ''}mph` }}</h4>
           <span>Wind</span>
         </div>
         <div class="pressure">
-          <h4>{{ `${weather?.Pressure.Imperial.Value}in` }}</h4>
+          <h4>{{ `${weather?.Pressure.Imperial.Value ?? ''}in` }}</h4>
           <span>Pressure</span>
         </div>
         <div class="humidity">
-          <h4>{{ `${weather?.RelativeHumidity}%` }}</h4>
+          <h4>{{ `${weather?.RelativeHumidity ?? ''}%` }}</h4>
           <span>Humidity</span>
         </div>
         <div class="precipitation">
           <h4>
-            {{ `${weather?.PrecipitationSummary.Precipitation.Metric.Value}%` }}
+            {{ `${weather?.PrecipitationSummary.Precipitation.Metric.Value ?? ''}%` }}
           </h4>
           <span>Precipitation</span>
         </div>
