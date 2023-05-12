@@ -25,7 +25,7 @@
 import { FaSearch } from "vue3-icons/fa";
 import { TbCurrentLocation } from "vue3-icons/tb";
 import CustomSelect from "./CustomSelect.vue";
-import { defineComponent, computed, ref, watch } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useStore } from "@/store";
 import { debounce } from "lodash";
 import { useRouter } from "vue-router";

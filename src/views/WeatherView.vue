@@ -1,8 +1,8 @@
 <template>
   <div class="weatherView" v-if="weather">
-    <RouterLink to="/" class="goBack_btn">
+    <div @click="goBack" class="goBack_btn">
       <FaArrowLeft />
-    </RouterLink>
+    </div>
     <button
       class="saveLocation_btn"
       v-if="selectedLocation"
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { useRoute, RouterLink } from "vue-router";
+import { useRoute } from "vue-router";
 import HourCard from "@/components/HourCard.vue";
 import CurrentWeatherInfo from "@/components/CurrentWeatherInfo.vue";
 import DayCard from "@/components/DayCard.vue";
@@ -44,6 +44,7 @@ import { FaArrowLeft } from "vue3-icons/fa";
 import { computed, onMounted } from "vue";
 import { useStore } from "@/store";
 import Loader from "@/components/Loader.vue";
+import router from "@/router";
 
 export default defineComponent({
   components: {
@@ -51,7 +52,6 @@ export default defineComponent({
     CurrentWeatherInfo,
     DayCard,
     FaArrowLeft,
-    RouterLink,
     Loader,
   },
   setup() {
@@ -79,6 +79,7 @@ export default defineComponent({
     const saveNewLocation = () => {
       store.dispatch("onSaveNewLocation");
     };
+    const goBack = () => router.push('/')
 
     onMounted(() => {
       getCurrentWeatherData();
@@ -95,6 +96,7 @@ export default defineComponent({
       fiveDaysData,
       selectedLocation,
       saveNewLocation,
+      goBack
     };
   },
 });

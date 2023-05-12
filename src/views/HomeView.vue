@@ -1,7 +1,11 @@
 <template>
   <main>
     <SearchBar />
-    <SavedCities :savedLocations="savedLocations" />
+    <SavedCities
+      :savedLocations="savedLocations"
+      @onGoToSavedLocation="onGoToSavedLocation"
+      @deleteLocation="deleteLocation"
+    />
   </main>
 </template>
 
@@ -9,8 +13,10 @@
 import SearchBar from "@/components/SearchBar.vue";
 import SavedCities from "@/components/SavedCities.vue";
 import { computed, defineComponent, onMounted } from "vue";
-import { useStore } from '@/store'
+import { useStore } from "@/store";
 import "vue3-toastify/dist/index.css";
+import { locationInfo } from "@/types/weather.interface";
+import router from "@/router";
 
 export default defineComponent({
   components: {
@@ -25,11 +31,21 @@ export default defineComponent({
       store.dispatch("onGetSavedLocations");
     };
 
+    const onGoToSavedLocation = (location: locationInfo) => {
+      router.push(`/${location.Key}`);
+    };
+
+    const deleteLocation = (location: locationInfo) => {
+      store.dispatch("onDeleteLocation", location);
+    };
+
     onMounted(() => {
       getSavedLocations();
     });
     return {
       savedLocations,
+      onGoToSavedLocation,
+      deleteLocation
     };
   },
 });

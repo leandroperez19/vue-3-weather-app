@@ -58,7 +58,10 @@ export const store = createStore<State>({
     },
   },
   actions: {
-    async onGetLocationListByValue({ commit }: { commit: Commit }, value: string) {
+    async onGetLocationListByValue(
+      { commit }: { commit: Commit },
+      value: string
+    ) {
       const res = await getAutocompletedCountries(value);
       commit("setLocationList", res.data);
     },
@@ -73,7 +76,10 @@ export const store = createStore<State>({
       if (res.error) toast.error(`There was an error: ${res.error}`);
       commit("setSelectedLocation", res.data);
     },
-    async onGetTwelveHoursForecast({ commit }: { commit: Commit }, key: string) {
+    async onGetTwelveHoursForecast(
+      { commit }: { commit: Commit },
+      key: string
+    ) {
       const res = await getTwelveHoursForecast(key);
       if (res.error) toast.error(`There was an error: ${res.error}`);
       commit("setForecastsList", res.data);
@@ -93,7 +99,8 @@ export const store = createStore<State>({
       if (!location) return;
 
       const savedLocationsRaw = localStorage.getItem("savedLocations") ?? "[]";
-      const savedLocationsParsed: locationInfo[] = JSON.parse(savedLocationsRaw);
+      const savedLocationsParsed: locationInfo[] =
+        JSON.parse(savedLocationsRaw);
 
       const exist = savedLocationsParsed.find((l) => l.Key === location.Key);
 
@@ -109,9 +116,30 @@ export const store = createStore<State>({
         toast.info("You have already saved this location!");
       }
     },
+    onDeleteLocation(
+      { commit, state }: { commit: Commit; state: State },
+      location: locationInfo
+    ) {
+      const savedLocationsRaw = localStorage.getItem("savedLocations") ?? "[]";
+      let savedLocationsParsed: locationInfo[] = JSON.parse(savedLocationsRaw);
+
+      const exist = savedLocationsParsed.find((l) => l.Key === location.Key);
+
+      if (!exist) return;
+
+      savedLocationsParsed = savedLocationsParsed.filter(
+        (l) => l.Key !== location.Key
+      );
+      commit("setSavedLocations", savedLocationsParsed);
+      localStorage.setItem(
+        "savedLocations",
+        JSON.stringify(savedLocationsParsed)
+      );
+      toast.success(`Location ${location.LocalizedName} removed succesfully!`);
+    },
   },
 });
 
-export function useStore(){
+export function useStore() {
   return baseUseStore(key);
 }

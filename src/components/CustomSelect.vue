@@ -32,19 +32,6 @@ export default defineComponent({
     },
   },
   emits: ["close", "onSelected"] as unknown as EmitEvents,
-  setup(props, { emit }) {
-    const closeHandler = () => {
-      emit("close");
-    };
-    const selectedHandler = (location: locationInfo): void => {
-      emit("onSelected", location);
-    };
-
-    return {
-      closeHandler,
-      selectedHandler,
-    };
-  },
 });
 </script>
 
