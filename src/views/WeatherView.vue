@@ -29,7 +29,7 @@
       <DayCard v-if="fiveDaysData" :fiveDaysData="fiveDaysData" />
     </div>
   </div>
-  <div v-else class="loader">
+  <div v-else class="loaderdiv">
     <Loader />
   </div>
 </template>
@@ -165,7 +165,7 @@ export default defineComponent({
 .nextDays {
   margin: 20px auto;
 }
-.loader {
+.loaderdiv {
   position: fixed;
   right: 0;
   left: 0;
@@ -174,6 +174,12 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.loader{
+  border-color: #fff !important;
+  border-left-color: transparent !important;
+  width: 60px !important;
+  height: 60px !important;
 }
 @media (max-width: 768px) {
   .weatherView {

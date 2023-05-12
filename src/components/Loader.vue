@@ -4,20 +4,20 @@
 
 <style scoped>
 .loader {
-  border: 4px solid rgb(0, 0, 0);
+  border: 4px solid rgb(27, 26, 100);
   border-left-color: transparent;
   border-radius: 50%;
 }
 
 .loader {
-  border: 4px solid rgb(0, 0, 0);
+  border: 4px solid rgb(27, 26, 100);
   border-left-color: transparent;
   width: 20px;
   height: 20px;
 }
 
 .loader {
-  border: 4px solid rgb(0, 0, 0);
+  border: 4px solid rgb(27, 26, 100);
   border-left-color: transparent;
   width: 30px;
   height: 30px;

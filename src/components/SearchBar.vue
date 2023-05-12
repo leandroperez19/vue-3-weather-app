@@ -150,5 +150,10 @@ svg {
 }
 .loader{
   margin-right: 15px;
+  border: 4px solid #000 !important;
+  border-left-color: transparent !important;
+  width: 30px !important;
+  height: 30px !important;
+  position: relative !important;
 }
 </style>
