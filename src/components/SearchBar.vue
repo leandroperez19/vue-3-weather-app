@@ -4,7 +4,7 @@
       <FaSearch class="searchBar_inputlens" />
     </label>
     <input
-      autocomplete="false"
+      autocomplete="off"
       type="text"
       placeholder="Search for a city..."
       id="searchBar_input"

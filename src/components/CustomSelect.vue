@@ -19,12 +19,31 @@
 import type { locationInfo } from "@/types/weather.interface";
 import { defineComponent, type PropType } from "vue";
 
+type EmitEvents = {
+  close: () => void;
+  onSelected: (location: locationInfo) => void;
+};
+
 export default defineComponent({
   props: {
     locations: {
       type: Array as PropType<locationInfo[] | null>,
       required: true,
     },
+  },
+  emits: ["close", "onSelected"] as unknown as EmitEvents,
+  setup(props, { emit }) {
+    const closeHandler = () => {
+      emit("close");
+    };
+    const selectedHandler = (location: locationInfo): void => {
+      emit("onSelected", location);
+    };
+
+    return {
+      closeHandler,
+      selectedHandler,
+    };
   },
 });
 </script>

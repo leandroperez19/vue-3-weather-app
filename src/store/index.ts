@@ -18,7 +18,7 @@ import "vue3-toastify/dist/index.css";
 interface State {
   locationList: locationInfo[] | null;
   selectedLocation: locationInfo | null;
-  currentWeather: CurrentWeather | null;
+  currentWeather: CurrentWeather[] | null;
   forecastsList: DailyForecasts[] | null;
   fiveDaysForecast: FiveDaysInfo | null;
   savedLocations: locationInfo[] | null;
@@ -44,7 +44,7 @@ export const store = createStore<State>({
     setSelectedLocation(state: State, location: locationInfo | null) {
       state.selectedLocation = location;
     },
-    setCurrentWeather(state: State, weather: CurrentWeather | null) {
+    setCurrentWeather(state: State, weather: CurrentWeather[] | null) {
       state.currentWeather = weather;
     },
     setForecastsList(state: State, list: DailyForecasts[] | null) {
@@ -93,8 +93,7 @@ export const store = createStore<State>({
       if (!location) return;
 
       const savedLocationsRaw = localStorage.getItem("savedLocations") ?? "[]";
-      const savedLocationsParsed: locationInfo[] =
-        JSON.parse(savedLocationsRaw);
+      const savedLocationsParsed: locationInfo[] = JSON.parse(savedLocationsRaw);
 
       const exist = savedLocationsParsed.find((l) => l.Key === location.Key);
 

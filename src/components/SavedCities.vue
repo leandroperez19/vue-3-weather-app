@@ -17,12 +17,9 @@
 <script lang="ts">
 import type { locationInfo } from "@/types/weather.interface";
 import { defineComponent, type PropType } from "vue";
-import { RouterLink, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  components: {
-    RouterLink,
-  },
   props: {
     savedLocations: {
       type: Array as PropType<locationInfo[] | null>,
