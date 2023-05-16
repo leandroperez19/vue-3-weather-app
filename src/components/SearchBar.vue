@@ -5,13 +5,17 @@
     </label>
     <input
       autocomplete="off"
+      v-model="value"
       type="text"
       placeholder="Search for a city..."
       id="searchBar_input"
-      @input="inputHandler"
       @focus="setOnFocus"
     />
-    <TbCurrentLocation class="currentLocation_btn" @click="getGeoLocation" v-if="!showLoader"/>
+    <TbCurrentLocation
+      class="currentLocation_btn"
+      @click="getGeoLocation"
+      v-if="!showLoader"
+    />
     <Loader v-else class="loader" />
   </div>
   <CustomSelect
@@ -26,7 +30,7 @@
 import { FaSearch } from "vue3-icons/fa";
 import { TbCurrentLocation } from "vue3-icons/tb";
 import CustomSelect from "./CustomSelect.vue";
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "@/store";
 import { debounce } from "lodash";
 import { useRouter } from "vue-router";
@@ -40,20 +44,24 @@ export default defineComponent({
     CustomSelect,
     Loader,
     FaSearch,
-    TbCurrentLocation
+    TbCurrentLocation,
   },
   setup() {
     const router = useRouter();
     const store = useStore();
     const locations = computed(() => store.state.locationList);
     const showSelectorList = ref(false);
-    const showLoader = ref(false)
+    const showLoader = ref(false);
+    const value = ref("");
 
-    const debouncedInputHandler = debounce(async (e: Event) => {
-      const target = e.target as HTMLInputElement | null;
-      if (target) {
+    watch(value, (newValue) => {
+      debouncedInputHandler(newValue);
+    });
+
+    const debouncedInputHandler = debounce(async (value: String) => {
+      if (value) {
         if (showSelectorList.value) showSelectorList.value = false;
-        await store.dispatch("onGetLocationListByValue", target.value);
+        await store.dispatch("onGetLocationListByValue", value);
         showSelectorList.value = true;
       }
     }, 700);
@@ -64,23 +72,19 @@ export default defineComponent({
         (locations as unknown as locationInfo[]).length > 0;
     };
 
-    const inputHandler = (e: any) => {
-      debouncedInputHandler(e);
-    };
-
     const navigateToRoute = (location: locationInfo) => {
       router.push(`/${location.Key}`);
     };
 
     const getGeoLocation = () => {
-      showLoader.value = true
+      showLoader.value = true;
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const res = await getLocationByLatnLog(`${latitude},${longitude}`);
-            showLoader.value = false
+            showLoader.value = false;
 
             if (res.error) toast.error(`There was an error: ${res.error}`);
             if (res.data?.Key) router.push(`${res.data?.Key}`);
@@ -98,7 +102,7 @@ export default defineComponent({
       locations,
       showSelectorList,
       showLoader,
-      inputHandler,
+      value,
       navigateToRoute,
       setOnFocus,
       getGeoLocation,
@@ -148,7 +152,7 @@ svg {
 .currentLocation_btn:hover {
   color: blue;
 }
-.loader{
+.loader {
   margin-right: 15px;
   border: 4px solid #000 !important;
   border-left-color: transparent !important;

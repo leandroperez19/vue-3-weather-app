@@ -1,10 +1,14 @@
 <template>
   <ul class="select" v-if="locations && locations.length > 0">
     <li
-      v-for="location in locations"
+      v-for="(location, index) in locations"
       :key="location.Key"
       class="option"
       @click="$emit('onSelected', location)"
+      :tabindex="0"
+      @keydown="handleKeyDown($event,index,location)"
+      @mouseover="handleHover($event,index)"
+      ref="element"
     >
       {{ location.LocalizedName }}
     </li>
@@ -17,7 +21,8 @@
 
 <script lang="ts">
 import type { locationInfo } from "@/types/weather.interface";
-import { defineComponent, type PropType } from "vue";
+import { defineComponent, ref, onMounted, type PropType, computed } from "vue";
+import { useRouter } from "vue-router";
 
 type EmitEvents = {
   close: () => void;
@@ -32,6 +37,59 @@ export default defineComponent({
     },
   },
   emits: ["close", "onSelected"] as unknown as EmitEvents,
+
+  setup({ locations }) {
+    const indexTab = ref(0);
+    const element = ref();
+    const router = useRouter();
+
+    // const getBorderStyle = (index:number) => {
+    //   return {
+    //     backgroundColor: index === indexTab ? "blue" : "transparent",
+    //   };
+    // };
+
+    const handleKeyDown = (e: KeyboardEvent,index: number,location: locationInfo) => {
+      if (e.key === "ArrowDown") {
+        // indexTab.value = index;
+        // console.log(e.target,indexTab.value);
+        if(locations && index === locations.length - 1){
+          element.value[0].focus()
+          return
+        } 
+        console.log(element.value[index])
+        element.value[index + 1].focus()
+      }
+      if(e.key === 'ArrowUp'){
+        if(locations && index === 0){
+          element.value[locations.length - 1].focus()
+          return
+        }
+        console.log(element.value[index])
+        element.value[index - 1].focus()
+      }
+      if(e.key === 'Enter'){
+        router.push(`/${location.Key}`)
+      }
+    };
+
+    const handleHover = (e:MouseEvent,index:number)=>{
+      element.value[index].focus()
+    }
+
+
+    // onMounted(()=>{
+    //   console.log(element.value[0])
+    // })
+
+    return {
+      indexTab,
+      element,
+      handleKeyDown,
+      handleHover
+      // getBorderStyle
+    };
+  },
 });
 </script>
 
@@ -61,10 +119,13 @@ export default defineComponent({
   width: 100%;
   cursor: pointer;
 }
-.option:hover {
+
+.option:focus {
   background-color: #0d2d85;
   color: #fff;
   border: 1px solid #fff;
+  outline: none;
+  border: none;
 }
 .overlay {
   position: fixed;
